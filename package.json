@@ -1,0 +1,30 @@
+{
+  "name": "cakerback",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meriambm93/cakerback.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Meriambm93/cakerback/issues"
+  },
+  "homepage": "https://github.com/Meriambm93/cakerback#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.0.0-alpha.8",
+    "knex": "^0.95.12",
+    "mysql2": "^2.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "nodemon": "^2.0.14"
+  }
+}
