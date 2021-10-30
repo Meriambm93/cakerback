@@ -7,7 +7,7 @@ exports.up = async (knex) => {
     table.increments("id")
     table.string("firstName", 45).notNullable()
     table.string("lastName", 45).notNullable()
-    table.string("email", 60).notNullable()
+    table.string("email", 60).notNullable().unique()
     table.text("passwordHash").notNullable()
     table.text("passwordSalt").notNullable()
     table.string("address", 45).notNullable()
