@@ -7,6 +7,8 @@ const config = require("./src/config")
 const knexfile = require("./knexfile")
 //Routes
 const roleRoute = require("./src/routes/roleRoute")
+const categoryRoute = require("./src/routes/categoryRoute")
+const shopRoute = require("./src/routes/shopRoute")
 const userRoute = require("./src/routes/userRoute")
 const signingRoute = require("./src/routes/signingRoute")
 
@@ -19,8 +21,10 @@ app.use(cors())
 app.use(express.json())
 
 roleRoute({ app, db })
+categoryRoute({ app, db })
+shopRoute({ app, db })
 //Creation user route
 userRoute({ app, db })
 signingRoute({ app, db })
 
-app.listen(config.app.port)
+app.listen(5000)
