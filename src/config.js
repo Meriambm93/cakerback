@@ -1,3 +1,4 @@
+const { resolve } = require("path")
 const config = {
   db: {
     client: "mysql2",
@@ -7,6 +8,9 @@ const config = {
       database: process.env.DB_NAME,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
+    },
+    migrations: {
+      directory: resolve(__dirname, "migrations"),
     },
   },
   app: {

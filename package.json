@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev",
     "build": "next build",
-    "start": "env $(cat .env.local) nodemon index.js",
-    "knex": "env $(cat .env.local) knex",
+    "start": "bash -c 'env $(cat .env.local) nodemon index.js'",
+    "knex": "bash -c 'env $(cat .env.local) knex'",
     "lint": "next lint"
   },
   "repository": {
