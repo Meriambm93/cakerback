@@ -6,35 +6,42 @@ const emailValidator = require("../validators/emailValidator")
 const passwordValidator = require("../validators/passwordValidator")
 
 const signingRoute = ({ app }) => {
-  app.post("/sign-up", async (req, res) => {
-    const {
-      body: {
-        firstName,
-        lastName,
-        email,
-        password,
-        address,
-        city,
-        zipCode,
-        role_id,
-      },
-    } = req
-    const { hash, salt } = hashPassword(password)
-    const user = await User.query()
-      .insertAndFetch({
-        firstName,
-        lastName,
-        email,
-        passwordHash: hash,
-        passwordSalt: salt,
-        address,
-        city,
-        zipCode,
-        role_id,
-      })
-      .withGraphFetched("role")
-    res.send({ status: "success" })
-  })
+  app.post(
+    "/sign-up",
+    validate({
+      email: emailValidator(),
+      password: passwordValidator(),
+    }),
+    async (req, res) => {
+      const {
+        body: {
+          firstName,
+          lastName,
+          email,
+          password,
+          address,
+          city,
+          zipCode,
+          role_id,
+        },
+      } = req
+      const { hash, salt } = hashPassword(password)
+      const user = await User.query()
+        .insertAndFetch({
+          firstName,
+          lastName,
+          email,
+          passwordHash: hash,
+          passwordSalt: salt,
+          address,
+          city,
+          zipCode,
+          role_id,
+        })
+        .withGraphFetched("role")
+      res.send({ status: "success" })
+    },
+  )
   app.post(
     "/sign-in",
     validate({
