@@ -58,7 +58,7 @@ const shopRoute = ({ app }) => {
       })
       .withGraphFetched("user")
 
-    res.send(film)
+    res.send(shop)
   })
   // DELETE
   app.delete("/shop/:shopId", async (req, res) => {

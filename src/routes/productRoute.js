@@ -45,7 +45,7 @@ const productRoute = ({ app }) => {
     } = req
 
     const product = await Product.query()
-      .updateAndFetchById(shopId, {
+      .updateAndFetchById(productId, {
         name,
         price,
         mainPicture,
@@ -59,7 +59,7 @@ const productRoute = ({ app }) => {
   // DELETE
   app.delete("/product/:productId", async (req, res) => {
     const {
-      params: { sproductId },
+      params: { productId },
     } = req
     const product = await Product.query().findById(productId)
 

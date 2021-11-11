@@ -26,7 +26,8 @@
     "express": "^5.0.0-alpha.8",
     "knex": "^0.95.12",
     "mysql2": "^2.3.2",
-    "objection": "^3.0.0-alpha.4"
+    "objection": "^3.0.0-alpha.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "^8.1.0",
