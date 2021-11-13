@@ -1,11 +1,14 @@
 const hashPassword = require("../hashPassword")
 const User = require("../models/User")
 const config = require("../config")
+const uuid = require('uuid')
 const validate = require("../middlewares/validate")
+const auth = require("../middlewares/auth")
 const emailValidator = require("../validators/emailValidator")
 const passwordValidator = require("../validators/passwordValidator")
 
-const signingRoute = ({ app }) => {
+
+const signingRoute = ({ app, redis }) => {
   app.post(
     "/sign-up",
     validate({
@@ -66,6 +69,17 @@ const signingRoute = ({ app }) => {
       if (user.passwordHash !== hash) {
         return res.status(403).send({ error: "invalid" })
       }
+
+      const maxAge = config.security.session
+      const sessionId = uuid.v4()
+      await redis.setex(`sessionId:${sessionId}`, maxAge, user.id)
+      res.cookie("sessionId", sessionId, {
+        maxAge: maxAge * 1000,
+        path: "/",
+        domain: "localhost",
+        httpOnly: true,
+      })
+
       res.send({ status: "ok" })
     },
   )
