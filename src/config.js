@@ -21,9 +21,6 @@ const config = {
       minLength: 8,
       pattern: /[\w-]+/gi,
     },
-    session: {
-      maxAge: 600, //seconds
-    },
   },
 }
 module.exports = config
