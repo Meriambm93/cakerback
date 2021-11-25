@@ -4,9 +4,9 @@ const config = require("../config")
 const validate = require("../middlewares/validate")
 const emailValidator = require("../validators/emailValidator")
 const passwordValidator = require("../validators/passwordValidator")
+const uuid = require("uuid")
 
-
-const signingRoute = ({ app }) => {
+const signingRoute = ({ app, redis }) => {
   app.post(
     "/sign-up",
     validate({
@@ -67,9 +67,38 @@ const signingRoute = ({ app }) => {
       if (user.passwordHash !== hash) {
         return res.status(403).send({ error: "invalid" })
       }
+      const sessionId = uuid.v4()
+      const { maxAge } = config.security.session
+
+      await redis.setex(`sessionId:${sessionId}`, maxAge, user.id)
+
+      res.cookie("sessionId", sessionId, {
+        maxAge: maxAge * 1000,
+        path: "/",
+        domain: "localhost",
+        httpOnly: true,
+      })
       res.send({ status: "ok" })
     },
   )
+  app.get("/session", async (req, res) => {
+    const { sessionId } = req.cookies
+    const userId = await redis.get(`sessionId:${sessionId}`)
+    setTimeout(() => {
+      if (!userId) {
+        return res.send({ session: false })
+      }
+
+      res.send({ session: { userId } })
+    }, 1500)
+  })
+
+  app.delete("/session", async (req, res) => {
+    const { sessionId } = req.cookies
+
+    await redis.del(`sessionId:${sessionId}`)
+    res.send("Ok")
+  })
 }
 
 module.exports = signingRoute

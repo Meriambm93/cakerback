@@ -1,3 +1,5 @@
+const { resolve } = require("path")
+
 const config = {
   db: {
     client: "mysql2",
@@ -21,6 +23,12 @@ const config = {
       minLength: 8,
       pattern: /[\w-]+/gi,
     },
+    session: {
+      maxAge: 600,
+    },
+  },
+  upload: {
+    directory: resolve(__dirname, "../public"),
   },
 }
 module.exports = config
