@@ -1,26 +1,48 @@
 const Product = require("../models/Product")
+const config = require("../config")
+const { extname } = require("path")
 
 const productRoute = ({ app }) => {
   app.post("/product", async (req, res) => {
     const {
-      body: { name, price, mainPicture, secondaryPicture, shop_id },
+      body: { name, price, description, shop_id },
     } = req
     const product = await Product.query()
       .insertAndFetch({
         name,
         price,
-        mainPicture,
-        secondaryPicture,
+        description,
         shop_id,
       })
       .withGraphFetched("shop")
-    res.send({ status: "success" })
+    //console.log(req.files)
+    res.send(product)
   })
+  app.post("/upload-productImage/:productId/:num", async (req, res) => {
+    const {
+      files: { image },
+      params: { productId, num },
+    } = req
+    if (!image) {
+      return res.send(null)
+    }
+    const imagePath = `${productId}_${num}${extname(image.name)}`
+    image?.mv(`${config.upload.directory}/${imagePath}`)
+    res.send({})
+  })
+
   // READ INDEX
   app.get("/product", async (req, res) => {
-    const products = await Product.query().withGraphFetched("shop")
+    const {
+      query: { shop_id },
+    } = req
+    const query = Product.query().withGraphFetched("shop")
 
-    res.send(products)
+    if (shop_id) {
+      query.where("shop_id", shop_id)
+    }
+
+    res.send(await query)
   })
   // READ SINGLE
   app.get("/product/:productId", async (req, res) => {

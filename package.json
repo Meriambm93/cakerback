@@ -22,12 +22,17 @@
   },
   "homepage": "https://github.com/Meriambm93/cakerback#readme",
   "dependencies": {
-    "cookie-parser": "^1.4.5",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^5.0.0-alpha.8",
+    "express-fileupload": "^1.2.1",
+    "ioredis": "^4.27.9",
     "knex": "^0.95.12",
     "mysql2": "^2.3.2",
-    "objection": "^3.0.0-alpha.4"
+    "objection": "^3.0.0-alpha.4",
+    "uuid": "^8.3.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "^8.1.0",
