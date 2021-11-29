@@ -84,12 +84,13 @@ const signingRoute = ({ app, redis }) => {
   app.get("/session", async (req, res) => {
     const { sessionId } = req.cookies
     const userId = await redis.get(`sessionId:${sessionId}`)
+    const user = await User.query().findById(userId)
     setTimeout(() => {
       if (!userId) {
         return res.send({ session: false })
       }
 
-      res.send({ session: { userId } })
+      res.send({ session: { userId, roleId: user.role_id } })
     }, 1500)
   })
 
