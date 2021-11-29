@@ -1,8 +1,28 @@
 const user = require("../models/User")
 
-const userProfilRoute = ({ app }) => {
+const userProfilRoute = ({ app, redis }) => {
   // GET one user profil
   app.get("/user/profil/:user_id", async (req, res) => {
+    const {
+      params: { user_id },
+    } = req
+
+    // je cherche dans la base de données les info de l'utilitsateur
+    const userProfil = await user.query().findById(user_id)
+
+    // je vérifie si l'utilisateur existe sinon j'envoie un msg d'erreur
+    if (!userProfil) {
+      return res.status(404).send({ error: "User profil not found." })
+    }
+
+    // Si l'utilisateur existe alors j'envoie toute la données de l'utilisateur
+    // send = Envoyer
+    res.send(userProfil)
+  })
+
+  // Get recuperer la session d'un user
+
+  app.get("session/user/profil/:user_id", async (req, res) => {
     const {
       params: { user_id },
     } = req
@@ -34,7 +54,6 @@ const userProfilRoute = ({ app }) => {
         city,
         zipCode,
         profilePicture,
-        role_id,
       },
     } = req
 
@@ -48,7 +67,6 @@ const userProfilRoute = ({ app }) => {
       city,
       zipCode,
       profilePicture,
-      role_id,
     })
 
     if (!userProfilUpdated) {
@@ -66,11 +84,13 @@ const userProfilRoute = ({ app }) => {
 
     // je cherche dans la bdd l'id de l'utilisateur a supprimer
     const userProfil = await user.query().deleteById(user_id)
+    const { sessionId } = req.cookies
 
     // je vérifie si l'utilisateur existe sinon j'envoie un msg d'erreur
     if (!userProfil) {
       return res.status(404).send({ error: "User profil not found." })
     }
+    await redis.del(`sessionId:${sessionId}`)
 
     // Si l'utilisateur existe alors j'envoie toute la données de l'utilisateur
     // send = Envoyer
