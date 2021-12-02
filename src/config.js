@@ -24,7 +24,7 @@ const config = {
       pattern: /[\w-]+/gi,
     },
     session: {
-      maxAge: 600,
+      maxAge: 600000,
     },
   },
   upload: {

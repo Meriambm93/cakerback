@@ -43,6 +43,10 @@ app.use(
     tempFileDir: "/tmp/",
   }),
 )
+app.use((req, res, next) => {
+  req.redis = redis
+  next()
+})
 
 roleRoute({ app, db })
 categoryRoute({ app, db })
