@@ -15,7 +15,7 @@ const productRoute = ({ app }) => {
         shop_id,
       })
       .withGraphFetched("shop")
-    //console.log(req.files)
+
     res.send(product)
   })
   app.post("/upload-productImage/:productId/:num", async (req, res) => {
