@@ -63,15 +63,14 @@ const productRoute = ({ app }) => {
   app.put("/product/:productId", async (req, res) => {
     const {
       params: { productId },
-      body: { name, price, mainPicture, secondaryPicture, shop_id },
+      body: { name, price, description, shop_id },
     } = req
 
     const product = await Product.query()
       .updateAndFetchById(productId, {
         name,
         price,
-        mainPicture,
-        secondaryPicture,
+        description,
         shop_id,
       })
       .withGraphFetched("shop")
