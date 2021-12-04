@@ -1,11 +1,12 @@
+const auth = require("../middlewares/auth")
+const config = require("../config")
 const Shop = require("../models/Shop")
 
 const shopRoute = ({ app }) => {
-  // shop
-  // CREATE
-  app.post("/shop", async (req, res) => {
+  app.post("/shop", auth, async (req, res) => {
     const {
-      body: { name, address, city, zipCode, picture, user_id },
+      body: { name, address, city, zipCode, picture },
+      userId,
     } = req
 
     const shop = await Shop.query()
@@ -15,7 +16,7 @@ const shopRoute = ({ app }) => {
         city,
         zipCode,
         picture,
-        user_id,
+        user_id: userId,
       })
       .withGraphFetched("user")
 
