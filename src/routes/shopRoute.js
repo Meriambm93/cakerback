@@ -1,8 +1,9 @@
 const auth = require("../middlewares/auth")
-const config = require("../config")
 const Shop = require("../models/Shop")
 
 const shopRoute = ({ app }) => {
+  // shop
+  // CREATE
   app.post("/shop", auth, async (req, res) => {
     const {
       body: { name, address, city, zipCode, picture },
