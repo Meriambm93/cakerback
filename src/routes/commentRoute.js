@@ -22,7 +22,9 @@ const commentRoute = ({ app }) => {
   // READ INDEX
   app.get("/comment", async (req, res) => {
     const comments = await Comment.query()
-
+      .select("message", "score", "date", "firstName", "lastName", "comment.id")
+      .joinRelated("user")
+    console.log(comments)
     res.send(comments)
   })
   // READ SINGLE
